@@ -24,3 +24,6 @@ Clean Architecture (single module) MVVM Jokes App
 
 # *Statistics*
 ![Sample](https://i.imgur.com/SdKQqm6.png)
+
+# Disclaminer
+Jokes provided by [Jokes API](https://sv443.net/jokeapi/v2/) may contain sensitive content and it does not resemble me in any straightway. I am not responsible for any offensive jokes that you may find in their API that my app might show to the end-user.
