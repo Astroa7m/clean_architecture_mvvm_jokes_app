@@ -12,26 +12,17 @@ class AddJokeUseCase @Inject constructor(
     suspend operator fun invoke(
         category: String,
         delivery: String? = null,
-        flagsList: List<Boolean>,
         lang: String,
         joke: String? = null,
         setup: String? = null,
         type: String
     ) : Resource<Unit> {
 
-        val flags = Flags(
-            flagsList[0],
-            flagsList[1],
-            flagsList[2],
-            flagsList[3],
-            flagsList[4],
-            flagsList[5],
-        )
 
         val postJoke = if(type == "single"){
             PostJoke.PostJokeSingle(
                 category,
-                flags,
+                Flags(false, false, false, false, false, false),
                 lang,
                 joke!!,
                 type
@@ -40,7 +31,7 @@ class AddJokeUseCase @Inject constructor(
             PostJoke.PostJokeTwoPart(
                 category,
                 delivery!!,
-                flags,
+                Flags(false, false, false, false, false, false),
                 lang,
                 setup!!,
                 type

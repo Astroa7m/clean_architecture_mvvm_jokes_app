@@ -6,7 +6,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.jokesapp.core.Resource
 import com.example.jokesapp.domain.use_case.AddJokeUseCase
-import com.example.jokesapp.presentation.screen.add_joke.comp.CheckBoxItemModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
@@ -54,12 +53,6 @@ class AddJokeViewModel @Inject constructor(
         _customLanguageText.value = value
     }
 
-    private var flagsList: List<CheckBoxItemModel> = emptyList()
-
-    fun setFlags(list: List<CheckBoxItemModel>) {
-        flagsList = list
-    }
-
     fun addJoke(isSingle: Boolean) = viewModelScope.launch {
         if (isSingle) {
 
@@ -70,7 +63,6 @@ class AddJokeViewModel @Inject constructor(
             val result = addJokeUseCase(
                 _categoryText.value,
                 null,
-                flagsList.map { it.isChecked },
                 _customLanguageText.value,
                 joke.value,
                 null,
@@ -88,7 +80,6 @@ class AddJokeViewModel @Inject constructor(
             val result = addJokeUseCase(
                 _categoryText.value,
                 deliveryText.value,
-                flagsList.map { it.isChecked },
                 _customLanguageText.value,
                 null,
                 setupText.value,

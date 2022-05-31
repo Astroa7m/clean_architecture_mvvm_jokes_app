@@ -3,9 +3,10 @@ package com.example.jokesapp.presentation.screen.add_joke.comp
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
-import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.relocation.BringIntoViewRequester
+import androidx.compose.foundation.relocation.bringIntoViewRequester
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowDropDown
@@ -13,12 +14,13 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.rotate
+import androidx.compose.ui.focus.onFocusEvent
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.jokesapp.presentation.screen.add_joke.AddJokeViewModel
 import com.example.jokesapp.presentation.screen.home.component.categories
-import com.google.accompanist.flowlayout.FlowRow
+import kotlinx.coroutines.launch
 
 val languageList = listOf(
     "en",
@@ -30,6 +32,7 @@ val languageList = listOf(
     "other"
 )
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun AddJokeMainScreen(
     viewModel: AddJokeViewModel,
@@ -37,22 +40,30 @@ fun AddJokeMainScreen(
     onCheckChanged: (Boolean) -> Unit
 ) {
 
+    val bringIntoViewRequester1 = remember { BringIntoViewRequester() }
+    val bringIntoViewRequester2 = remember { BringIntoViewRequester() }
+    val bringIntoViewRequester3 = remember { BringIntoViewRequester() }
+    val bringIntoViewRequester4 = remember { BringIntoViewRequester() }
+
+    val scope = rememberCoroutineScope()
+
+    val scrollState = rememberScrollState()
+
     var shouldShowCustomLanguageTextField by remember {
         mutableStateOf(false)
     }
 
     viewModel.onCustomLanguageTextChanged(languageList[0])
 
-    var flags : List<CheckBoxItemModel> = checkBoxMenuList
-
     Column(
         modifier = Modifier
             .fillMaxSize()
             .background(Color(0xFF1e1c1e))
+            .verticalScroll(scrollState)
             .padding(16.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        DropDownAddJokeMenu{
+        DropDownAddJokeMenu {
             viewModel.setCategory(it)
         }
         Spacer(modifier = Modifier.height(8.dp))
@@ -69,7 +80,16 @@ fun AddJokeMainScreen(
                 ),
                 value = viewModel.joke.value,
                 onValueChange = viewModel::onJokeTextChanged,
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .bringIntoViewRequester(bringIntoViewRequester1)
+                    .onFocusEvent { focusState ->
+                        if (focusState.isFocused) {
+                            scope.launch {
+                                bringIntoViewRequester1.bringIntoView()
+                            }
+                        }
+                    },
                 label = { Text(text = "type the joke") }
             )
 
@@ -87,7 +107,16 @@ fun AddJokeMainScreen(
                     ),
                     value = viewModel.setupText.value,
                     onValueChange = viewModel::onSetupTextChanged,
-                    modifier = Modifier.fillMaxWidth(),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .bringIntoViewRequester(bringIntoViewRequester2)
+                        .onFocusEvent { focusState ->
+                            if (focusState.isFocused) {
+                                scope.launch {
+                                    bringIntoViewRequester2.bringIntoView()
+                                }
+                            }
+                        },
                     label = { Text(text = "type the setup") }
                 )
 
@@ -101,26 +130,32 @@ fun AddJokeMainScreen(
                     ),
                     value = viewModel.deliveryText.value,
                     onValueChange = viewModel::onDeliveryTextChanged,
-                    modifier = Modifier.fillMaxWidth(),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .bringIntoViewRequester(bringIntoViewRequester3)
+                        .onFocusEvent { focusState ->
+                            if (focusState.isFocused) {
+                                scope.launch {
+                                    bringIntoViewRequester3.bringIntoView()
+                                }
+                            }
+                        },
                     label = { Text(text = "type the delivery") }
                 )
             }
         }
 
-        CheckBoxGroup {
-            flags = it
-        }
         Spacer(modifier = Modifier.height(8.dp))
         DropDownAddJokeMenu(
             listOfItems = languageList
-        ){
+        ) {
             shouldShowCustomLanguageTextField = it == "other"
-            if(!shouldShowCustomLanguageTextField){
+            if (!shouldShowCustomLanguageTextField) {
                 viewModel.onCustomLanguageTextChanged(it)
             }
         }
 
-        AnimatedVisibility(shouldShowCustomLanguageTextField){
+        AnimatedVisibility(shouldShowCustomLanguageTextField) {
             Spacer(modifier = Modifier.height(8.dp))
             OutlinedTextField(
                 colors = TextFieldDefaults.textFieldColors(
@@ -130,58 +165,25 @@ fun AddJokeMainScreen(
                 ),
                 value = viewModel.customLanguageText.value.take(2),
                 onValueChange = viewModel::onCustomLanguageTextChanged,
-                label = { Text(text = "type the language code") }
+                label = { Text(text = "type the language code") },
+                modifier = Modifier
+                    .bringIntoViewRequester(bringIntoViewRequester4)
+                    .onFocusEvent { focusState ->
+                        if (focusState.isFocused) {
+                            scope.launch {
+                                bringIntoViewRequester4.bringIntoView()
+                            }
+                        }
+                    }
             )
         }
         Spacer(modifier = Modifier.height(16.dp))
 
         Button(onClick = {
-            viewModel.setFlags(flags)
             viewModel.addJoke(single)
         }) {
             Text(text = "Add Joke")
         }
-    }
-}
-
-@Composable
-fun CheckBoxGroup(
-    modifier: Modifier = Modifier,
-    onListChanged: (List<CheckBoxItemModel>) -> Unit
-) {
-
-    val list = remember {
-        checkBoxMenuList
-    }
-
-    Column(modifier = modifier.padding(16.dp)) {
-        FlowRow {
-            list.forEachIndexed { index, item ->
-                CheckBoxItem(title = item.title, isChecked = item.isChecked) { isChecked ->
-                    list[index] = list[index].copy(isChecked = isChecked)
-                    onListChanged(list)
-                }
-            }
-        }
-    }
-}
-
-@Composable
-fun CheckBoxItem(
-    title: String,
-    isChecked: Boolean,
-    onCheckedChang: (Boolean) -> Unit
-) {
-    Column(
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center,
-        modifier = Modifier.padding(8.dp)
-    ) {
-        Checkbox(checked = isChecked, onCheckedChange = onCheckedChang)
-        Text(
-            text = title,
-            color = Color.White
-        )
     }
 }
 
@@ -196,7 +198,7 @@ fun DropDownAddJokeMenu(
         mutableStateOf(false)
     }
 
-    val list = listOfItems ?: categories.mapNotNull {  it.title.takeIf { title -> title != "All" } }
+    val list = listOfItems ?: categories.mapNotNull { it.title.takeIf { title -> title != "All" } }
 
     val rotation by animateFloatAsState(
         targetValue = if (expanded) 180f else 1f,
@@ -288,35 +290,3 @@ fun PreviewJokeTypeSwitch() {
 
     }
 }
-
-var checkBoxMenuList = mutableStateListOf(
-    CheckBoxItemModel(
-        "Nsfw",
-        false
-    ),
-    CheckBoxItemModel(
-        "Religious",
-        false
-    ),
-    CheckBoxItemModel(
-        "Political",
-        false
-    ),
-    CheckBoxItemModel(
-        "Racist",
-        false
-    ),
-    CheckBoxItemModel(
-        "Sexist",
-        false
-    ),
-    CheckBoxItemModel(
-        "Explicit",
-        false
-    )
-)
-
-data class CheckBoxItemModel(
-    val title: String,
-    val isChecked: Boolean
-)

@@ -12,8 +12,7 @@ interface JokesRepository {
         queryString: String,
         type: String,
         count: Int,
-        blacklistFlags: List<String>,
-        isSafeMode: Boolean
+        blacklistFlags: List<String>
     ) : Flow<Resource<List<Joke>>>
 
     fun getFavouriteJokes() : Flow<List<Joke>>

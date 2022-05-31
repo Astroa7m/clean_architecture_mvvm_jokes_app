@@ -35,8 +35,7 @@ fun JokesDropDownMenu(onItemChecked : (List<DropDownMenuItemModel>) -> Unit) {
     val filterList = remember {
         mutableStateListOf(
             DropDownMenuItemModel("One Part", false),
-            DropDownMenuItemModel("Two Parts", false),
-            DropDownMenuItemModel("Safe", false)
+            DropDownMenuItemModel("Two Parts", false)
         )
     }
 

@@ -22,8 +22,7 @@ class JokesRepositoryImpl @Inject constructor(
         queryString: String,
         type: String,
         count: Int,
-        blacklistFlags: List<String>,
-        isSafeMode: Boolean
+        blacklistFlags: List<String>
     ): Flow<Resource<List<Joke>>> = flow {
         try {
             emit(Resource.Loading())
@@ -36,8 +35,7 @@ class JokesRepositoryImpl @Inject constructor(
                 queryString,
                 type,
                 count,
-                blacklistFlagsString,
-                isSafeMode
+                blacklistFlagsString
             ).jokes
 
             emit(Resource.Success(result.map { it.toDomainJokes() }))

@@ -11,8 +11,7 @@ interface JokesRemoteSource {
         queryString: String = "",
         type: String = "",
         count: Int,
-        blacklistFlags: String = "",
-        isSafeMode: Boolean
+        blacklistFlags: String = ""
     ): JokesDto
 
     suspend fun addJoke(

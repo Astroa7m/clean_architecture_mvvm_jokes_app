@@ -18,13 +18,12 @@ class JokesRemoteSourceImpl(
         queryString: String,
         type: String,
         count: Int,
-        blacklistFlags: String,
-        isSafeMode: Boolean
+        blacklistFlags: String
     ): JokesDto {
 
 
         return client.get {
-            url("$BASE_URL/$category?blacklistFlags=$blacklistFlags&contains=${queryString.replace(" ", "%20")}&type=$type&amount=$count&${if (isSafeMode) "safe-mode" else ""}")
+            url("$BASE_URL/$category?blacklistFlags=$blacklistFlags&contains=${queryString.replace(" ", "%20")}&type=$type&amount=$count&safe-mode")
             /* parameter("blacklistFlags", blacklistFlags)
              parameter("contains", queryString)
              parameter("type", type)

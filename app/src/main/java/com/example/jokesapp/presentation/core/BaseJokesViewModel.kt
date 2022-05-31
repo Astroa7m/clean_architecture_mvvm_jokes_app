@@ -26,7 +26,7 @@ abstract class BaseJokesViewModel(
     private val _event = MutableSharedFlow<UIEvent>()
     val event = _event.asSharedFlow()
 
-    private var jokesPreference = listOf(false, false, false)
+    private var jokesPreference = listOf(false, false)
 
     private val _searchQuery = mutableStateOf("")
     val searchQuery: State<String> = _searchQuery

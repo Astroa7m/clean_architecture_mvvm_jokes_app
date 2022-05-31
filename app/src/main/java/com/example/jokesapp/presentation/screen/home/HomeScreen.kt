@@ -40,10 +40,9 @@ import com.example.jokesapp.presentation.screen.home.component.*
 @Composable
 fun HomeScreen(
     backStackEntry: State<NavBackStackEntry?>?,
+    viewModel : FeelingLuckyDialogViewModel = hiltViewModel(),
     onHomeScreenComponentClicked: (Screens) -> Unit
 ) {
-
-    val viewModel : FeelingLuckyDialogViewModel = hiltViewModel()
 
     var shouldShowLuckyJokeDialog by remember {
         mutableStateOf(false)
@@ -99,8 +98,8 @@ fun HomeScreen(
                 modifier = Modifier
                     .fillMaxSize()
                     .background(Color(0xFF1e1c1e))
-                    .padding(16.dp, 16.dp, 16.dp, it.calculateBottomPadding()+16.dp)
                     .verticalScroll(rememberScrollState())
+                    .padding(16.dp, 16.dp, 16.dp, it.calculateBottomPadding()+16.dp)
             ) {
                 //1st box
                 Box(

@@ -30,8 +30,7 @@ class GetJokesUseCase @Inject constructor(
             queryString,
             type,
             count,
-            blacklistFlags,
-            jokesPreference[2]
+            blacklistFlags
         )
 
 
@@ -40,8 +39,7 @@ class GetJokesUseCase @Inject constructor(
             queryString,
             type,
             count,
-            blacklistFlags,
-            jokesPreference[2]
+            blacklistFlags
         )
 
         return merge(firstTen, secondTen)
