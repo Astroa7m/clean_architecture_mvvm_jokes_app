@@ -59,9 +59,8 @@ fun FavouriteJokesScreen(viewModel: FavouriteJokesViewModel = hiltViewModel()) {
                 flingBehavior = rememberSnapperFlingBehavior(
                     lazyListState,
                     snapOffsetForItem = SnapOffsets.Start,
-                    maximumFlingDistance = { layoutInfo->
-                        val scrollLength = layoutInfo.endScrollOffset - layoutInfo.startScrollOffset
-                        scrollLength.toFloat()
+                    snapIndex = { _, startIndex, targetIndex ->
+                        targetIndex.coerceIn(startIndex - 1, startIndex + 1)
                     }
                 )
             ) {

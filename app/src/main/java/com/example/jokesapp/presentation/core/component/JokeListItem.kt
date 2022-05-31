@@ -82,21 +82,6 @@ fun JokeListItem(
                     tint = Color.Red.copy(alpha = 0.8f)
                 )
             }
-
-            val tags = mutableListOf<String>()
-            if (joke.flags.explicit) tags.add("#explicit")
-            if (joke.flags.nsfw) tags.add("#nsfw")
-            if (joke.flags.political) tags.add("#political")
-            if (joke.flags.racist) tags.add("#racist")
-            if (joke.flags.religious) tags.add("#religious")
-            if (joke.flags.sexist) tags.add("#sexist")
-
-            Text(
-                tags.joinToString().ifBlank { "" },
-                fontStyle = FontStyle.Italic,
-                textAlign = TextAlign.Center,
-            )
-
         }
     }
 }

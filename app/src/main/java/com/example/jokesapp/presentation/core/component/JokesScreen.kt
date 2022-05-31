@@ -8,8 +8,6 @@ import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.foundation.relocation.BringIntoViewRequester
-import androidx.compose.foundation.relocation.bringIntoViewRequester
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Refresh
@@ -82,13 +80,13 @@ fun JokesScreen(label: String, icon: Int, viewModel: BaseJokesViewModel) {
                     .fillMaxSize()
                     .padding(it),
                 state = lazyListState,
-                 flingBehavior = rememberSnapperFlingBehavior(
-                     lazyListState,
-                     snapOffsetForItem = SnapOffsets.Start,
-                     snapIndex = { _, startIndex, targetIndex ->
-                         targetIndex.coerceIn(startIndex - 1, startIndex + 1)
-                     }
-                 )
+                flingBehavior = rememberSnapperFlingBehavior(
+                    lazyListState,
+                    snapOffsetForItem = SnapOffsets.Start,
+                    snapIndex = { _, startIndex, targetIndex ->
+                        targetIndex.coerceIn(startIndex - 1, startIndex + 1)
+                    }
+                )
             ) {
 
                 items(
