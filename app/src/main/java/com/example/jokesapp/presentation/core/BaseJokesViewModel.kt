@@ -11,6 +11,7 @@ import com.example.jokesapp.domain.use_case.GetJokesUseCase
 import com.example.jokesapp.domain.use_case.UnFavouriteJokeUseCase
 import com.example.jokesapp.presentation.core.component.DropDownMenuItemModel
 import com.example.jokesapp.presentation.core.component.JokesState
+import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 
@@ -23,8 +24,8 @@ abstract class BaseJokesViewModel(
     private val _state = mutableStateOf(JokesState())
     val state: State<JokesState> = _state
 
-    private val _event = MutableSharedFlow<UIEvent>()
-    val event = _event.asSharedFlow()
+    private val _event = Channel<UIEvent>()
+    val event = _event.consumeAsFlow()
 
     private var jokesPreference = listOf(false, false)
 
@@ -55,7 +56,7 @@ abstract class BaseJokesViewModel(
                         isLoading = false,
                         errorMessage = result.message ?: "Error occurred"
                     )
-                    _event.emit(UIEvent.SnackBar(result.message.toString()))
+                    _event.send(UIEvent.SnackBar(result.message.toString()))
                 }
                 is Resource.Loading -> {
                     _state.value = state.value.copy(

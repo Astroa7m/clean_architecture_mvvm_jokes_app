@@ -5,20 +5,28 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.jokesapp.core.Resource
+import com.example.jokesapp.data.remote.dto.Flags
+import com.example.jokesapp.domain.model.Joke
 import com.example.jokesapp.domain.use_case.AddJokeUseCase
+import com.example.jokesapp.domain.use_case.FavouriteJokesUseCase
+import com.example.jokesapp.presentation.screen.add_joke.comp.languageList
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.flow.consumeAsFlow
 import kotlinx.coroutines.launch
+import java.lang.Exception
+import java.util.*
 import javax.inject.Inject
 
 @HiltViewModel
 class AddJokeViewModel @Inject constructor(
-    private val addJokeUseCase: AddJokeUseCase
+    val favouriteJokesUseCase: FavouriteJokesUseCase
 ) : ViewModel() {
 
-    private val _submissionResult = MutableSharedFlow<Resource<Unit>>()
-    val submissionResult = _submissionResult.asSharedFlow()
+    private val _submissionResult = Channel<Resource<Unit>>()
+    val submissionResult = _submissionResult.consumeAsFlow()
 
     private val _categoryText = mutableStateOf("Programming")
     fun setCategory(value: String) {
@@ -54,7 +62,68 @@ class AddJokeViewModel @Inject constructor(
     }
 
     fun addJoke(isSingle: Boolean) = viewModelScope.launch {
+
         if (isSingle) {
+            if (_joke.value.isEmpty() && _categoryText.value.isEmpty() || _customLanguageText.value.isEmpty()) {
+                _submissionResult.send(
+                    Resource.Failure("Please fill all the blanks")
+                )
+                return@launch
+            }
+            try {
+                favouriteJokesUseCase(
+                    Joke(
+                        UUID.randomUUID().toString().hashCode(),
+                        _categoryText.value,
+                        _joke.value,
+                        flags = Flags(false, false, false, false, false, false),
+                        lang = _customLanguageText.value,
+                        safe = true,
+                        isFavourite = true,
+                        type = "single"
+                    )
+                )
+                _submissionResult.send(
+                    Resource.Success(Unit)
+                )
+            } catch (e: Exception) {
+                _submissionResult.send(
+                    Resource.Failure(e.message ?: "Please fill all the blanks")
+                )
+            }
+        } else {
+            if (_setupText.value.isEmpty() && _deliveryText.value.isEmpty() && _categoryText.value.isEmpty() || _customLanguageText.value.isEmpty()) {
+                _submissionResult.send(
+                    Resource.Failure("Please fill all the blanks")
+                )
+                return@launch
+            }
+
+            try {
+                favouriteJokesUseCase(
+                    Joke(
+                        UUID.randomUUID().toString().hashCode(),
+                        _categoryText.value,
+                        setup = _setupText.value,
+                        delivery = deliveryText.value,
+                        flags = Flags(false, false, false, false, false, false),
+                        lang = _customLanguageText.value,
+                        safe = true,
+                        isFavourite = true,
+                        type = "twopart"
+                    )
+                )
+                _submissionResult.send(
+                    Resource.Success(Unit)
+                )
+            } catch (e: Exception) {
+                _submissionResult.send(
+                    Resource.Failure(e.message ?: "Please fill all the blanks")
+                )
+            }
+        }
+        // old logic
+        /*if (isSingle) {
 
             if(_joke.value.isBlank() && _categoryText.value.isBlank() && _customLanguageText.value.isBlank())
                 return@launch _submissionResult.emit(Resource.Failure("Please fill the given fields"))
@@ -89,7 +158,7 @@ class AddJokeViewModel @Inject constructor(
                 _submissionResult.emit(Resource.Success(Unit))
             else
                 _submissionResult.emit(Resource.Failure(result.message ?: "error occurred"))
-        }
+        }*/
     }
 
 }

@@ -68,7 +68,7 @@ fun AddJokeScreen(viewModel: AddJokeViewModel = hiltViewModel()) {
                     showProgress = when (result){
                         is Resource.Success ->{
                             scaffoldState.snackbarHostState.showSnackbar(
-                                "Joke's been successfully submitted, it'll be added after reviewing it by the author"
+                                "Joke's been successfully submitted, you can check it out in your favourite jokes"
                             )
                             false
                         }

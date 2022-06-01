@@ -23,7 +23,7 @@ class JokesRemoteSourceImpl(
 
 
         return client.get {
-            url("$BASE_URL/$category?blacklistFlags=$blacklistFlags&contains=${queryString.replace(" ", "%20")}&type=$type&amount=$count&safe-mode")
+            url("$BASE_URL/$category?blacklistFlags=$blacklistFlags&contains=${queryString.replace(" ", "%20")}&type=$type&amount=$count${if (category == "Dark") "" else "&safe-mode"}")
             /* parameter("blacklistFlags", blacklistFlags)
              parameter("contains", queryString)
              parameter("type", type)

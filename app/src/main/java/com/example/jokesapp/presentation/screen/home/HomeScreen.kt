@@ -12,7 +12,6 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material.icons.filled.AddCircle
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.outlined.FavoriteBorder
 import androidx.compose.runtime.*
@@ -24,15 +23,14 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
-import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavBackStackEntry
-import com.example.jokesapp.domain.model.Joke
 import com.example.jokesapp.presentation.core.component.DefaultAppBar
 import com.example.jokesapp.presentation.core.util.Screens
 import com.example.jokesapp.presentation.screen.home.component.*
@@ -40,7 +38,7 @@ import com.example.jokesapp.presentation.screen.home.component.*
 @Composable
 fun HomeScreen(
     backStackEntry: State<NavBackStackEntry?>?,
-    viewModel : FeelingLuckyDialogViewModel = hiltViewModel(),
+    feelingLuckyDialogViewModel: FeelingLuckyDialogViewModel = hiltViewModel(),
     onHomeScreenComponentClicked: (Screens) -> Unit
 ) {
 
@@ -78,7 +76,10 @@ fun HomeScreen(
         floatingActionButton = {
             FloatingActionButton(
                 backgroundColor = Color(0xFF8d5185),
-                modifier = Modifier.shadow(12.dp, shape = MaterialTheme.shapes.medium.copy(CornerSize(percent = 50))),
+                modifier = Modifier.shadow(
+                    12.dp,
+                    shape = MaterialTheme.shapes.medium.copy(CornerSize(percent = 50))
+                ),
                 onClick = { onHomeScreenComponentClicked(Screens.AddJoke) }
             ) {
                 Icon(
@@ -99,7 +100,7 @@ fun HomeScreen(
                     .fillMaxSize()
                     .background(Color(0xFF1e1c1e))
                     .verticalScroll(rememberScrollState())
-                    .padding(16.dp, 16.dp, 16.dp, it.calculateBottomPadding()+16.dp)
+                    .padding(16.dp, 16.dp, 16.dp, it.calculateBottomPadding() + 16.dp)
             ) {
                 //1st box
                 Box(
@@ -283,10 +284,13 @@ fun HomeScreen(
 
             if (shouldShowLuckyJokeDialog) {
                 FeelingLuckyJokeDialog(
-                    onDismiss = { shouldShowLuckyJokeDialog = false }, modifier = Modifier.align(
+                    onDismiss = {
+                        shouldShowLuckyJokeDialog = false
+                        feelingLuckyDialogViewModel.getAllJokes(count = 2)
+                    }, modifier = Modifier.align(
                         Alignment.Center
                     ),
-                    viewModel = viewModel
+                    viewModel = feelingLuckyDialogViewModel
                 )
             }
 
@@ -303,6 +307,9 @@ fun FeelingLuckyJokeDialog(
 ) {
 
     val state = viewModel.state.value
+    val joke = remember(state.jokes, state.jokes.size, state) {
+        state.jokes.random()
+    }
 
     Dialog(
         onDismissRequest = onDismiss,
@@ -310,11 +317,19 @@ fun FeelingLuckyJokeDialog(
         Column(
             modifier = modifier
                 .background(Color.Black.copy(0.25f))
-                .padding(16.dp)
-                .wrapContentSize(),
+                .wrapContentSize()
+                .padding(16.dp),
             verticalArrangement = Arrangement.SpaceEvenly,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
+
+            Text(
+                "Feeling Lucky Joke",
+                fontWeight = FontWeight.ExtraBold,
+                fontSize = 20.sp,
+                modifier = Modifier.paddingFromBaseline(bottom = 16.dp)
+            )
+
             if (state.errorMessage.isNotBlank())
                 Text(
                     text = state.errorMessage,
@@ -322,20 +337,20 @@ fun FeelingLuckyJokeDialog(
                     textAlign = TextAlign.Justify,
                     color = MaterialTheme.colors.error
                 )
-            if(state.jokes.isNotEmpty()) {
+            if (state.jokes.isNotEmpty()) {
                 val favouriteIcon =
-                    if (state.jokes[0].isFavourite) Icons.Filled.Favorite else Icons.Outlined.FavoriteBorder
+                    if (joke.isFavourite) Icons.Filled.Favorite else Icons.Outlined.FavoriteBorder
 
-                if (state.jokes[0].type == "twopart") {
+                if (joke.type == "twopart") {
                     val builder = buildAnnotatedString {
                         pushStyle(SpanStyle(fontWeight = FontWeight.Bold))
                         append("Setup: ")
                         pop()
-                        append("${state.jokes[0].setup.toString()}\n")
+                        append("${joke.setup.toString()}\n")
                         pushStyle(SpanStyle(fontWeight = FontWeight.Bold))
                         append("Delivery: ")
                         pop()
-                        append(state.jokes[0].delivery.toString())
+                        append(joke.delivery.toString())
                     }
                     Text(
                         text = builder,
@@ -348,7 +363,7 @@ fun FeelingLuckyJokeDialog(
                         pushStyle(SpanStyle(fontWeight = FontWeight.Bold))
                         append("Joke: ")
                         pop()
-                        append(state.jokes[0].joke.toString())
+                        append(joke.joke.toString())
                     }
                     Text(
                         text = builder,
@@ -358,7 +373,7 @@ fun FeelingLuckyJokeDialog(
                 }
                 IconButton(
                     onClick = {
-                        viewModel.onFavouriteItemClicked(state.jokes[0])
+                        viewModel.onFavouriteItemClicked(joke)
                     },
                 ) {
                     Icon(
@@ -367,20 +382,6 @@ fun FeelingLuckyJokeDialog(
                         tint = Color.Red.copy(alpha = 0.8f)
                     )
                 }
-
-                val tags = mutableListOf<String>()
-                if (state.jokes[0].flags.explicit) tags.add("#explicit")
-                if (state.jokes[0].flags.nsfw) tags.add("#nsfw")
-                if (state.jokes[0].flags.political) tags.add("#political")
-                if (state.jokes[0].flags.racist) tags.add("#racist")
-                if (state.jokes[0].flags.religious) tags.add("#religious")
-                if (state.jokes[0].flags.sexist) tags.add("#sexist")
-
-                Text(
-                    tags.joinToString().ifBlank { "" },
-                    fontStyle = FontStyle.Italic,
-                    textAlign = TextAlign.Center,
-                )
 
             }
         }

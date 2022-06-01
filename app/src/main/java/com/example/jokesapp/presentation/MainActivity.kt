@@ -8,7 +8,6 @@ import com.example.jokesapp.presentation.screen.all_jokes.AllJokesScreen
 import com.example.jokesapp.presentation.screen.home.HomeScreen
 import com.example.jokesapp.presentation.ui.theme.JokesAppTheme
 import dagger.hilt.android.AndroidEntryPoint
-
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
