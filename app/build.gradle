@@ -10,7 +10,7 @@ android {
     compileSdk 31
 
     defaultConfig {
-        applicationId "com.example.jokesapp"
+        applicationId "com.astroscoding.jokesapp"
         minSdk 27
         targetSdk 31
         versionCode 1
@@ -101,4 +101,7 @@ dependencies {
 
     //Snapping behavior of the lazy row
     implementation "dev.chrisbanes.snapper:snapper:0.2.1"
+
+    //datastore preferences
+    implementation "androidx.datastore:datastore-preferences:1.0.0"
 }
