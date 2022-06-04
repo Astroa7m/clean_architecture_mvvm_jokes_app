@@ -52,7 +52,6 @@ fun JokesScreen(label: String, icon: Int, viewModel: BaseJokesViewModel) {
                     label,
                     { isSearching = true }, {
                         viewModel.onFiltered(it)
-                        viewModel.getAllJokes(isFiltering = true)
                     },
                     icon = icon,
                     filter = viewModel.jokesPreference

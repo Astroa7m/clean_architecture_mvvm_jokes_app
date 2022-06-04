@@ -12,10 +12,11 @@ import com.astroscoding.jokesapp.domain.model.Joke
 import com.astroscoding.jokesapp.domain.use_case.FavouriteJokesUseCase
 import com.astroscoding.jokesapp.domain.use_case.GetJokesUseCase
 import com.astroscoding.jokesapp.domain.use_case.UnFavouriteJokeUseCase
-import com.astroscoding.jokesapp.presentation.core.component.DropDownMenuItemModel
 import com.astroscoding.jokesapp.presentation.core.component.JokesState
 import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.flow.*
+import kotlinx.coroutines.flow.consumeAsFlow
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 
 abstract class BaseJokesViewModel(
@@ -125,7 +126,10 @@ abstract class BaseJokesViewModel(
 
     fun onFiltered(filteringItems: Pair<Boolean, Boolean>) {
         viewModelScope.launch {
-            preferencesManager.setJokesType(filteringItems)
+            launch {
+                preferencesManager.setJokesType(filteringItems)
+            }.join()
+            getAllJokes(isFiltering = true)
         }
     }
 

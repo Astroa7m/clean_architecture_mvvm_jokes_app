@@ -17,7 +17,7 @@ class PreferencesManager (private val context: Context){
     val jokesPref = context.pref.data.map { preferences->
         val singleType = preferences[JOKE_SINGLE] ?: false
         val doubleType = preferences[JOKE_DOUBLE] ?: false
-        Pair(doubleType, singleType)
+        Pair(singleType, doubleType)
     }
 
     suspend fun setJokesType(types: Pair<Boolean, Boolean>) {
