@@ -27,9 +27,9 @@ abstract class BaseJokesViewModel(
 ) : ViewModel() {
 
     private val _state = mutableStateOf(JokesState())
-    val state: State<JokesState> = _state
+    open val state: State<JokesState> = _state
 
-    private val _event = Channel<UIEvent>()
+    protected val _event = Channel<UIEvent>()
     val event = _event.consumeAsFlow()
 
     var jokesPreference by mutableStateOf(Pair(false, false))
@@ -50,7 +50,7 @@ abstract class BaseJokesViewModel(
         }.launchIn(viewModelScope)
     }
 
-    fun getAllJokes(hasStartedSearching: Boolean = false, count: Int = 10, category: List<String> = listOf("Any"), isFiltering: Boolean = false) {
+    open fun getAllJokes(hasStartedSearching: Boolean = false, count: Int = 10, category: List<String> = listOf("Any"), isFiltering: Boolean = false) {
         getJokesUseCase(
             category,
             searchQuery.value.trim(),
@@ -94,7 +94,7 @@ abstract class BaseJokesViewModel(
         }.launchIn(viewModelScope)
     }
 
-    fun onFavouriteItemClicked(joke: Joke) {
+    open fun onFavouriteItemClicked(joke: Joke, favourite: Boolean? = null) {
         val list = state.value.jokes.map {
             if (joke == it) {
                 viewModelScope.launch {

@@ -38,7 +38,6 @@ import com.astroscoding.jokesapp.presentation.screen.home.component.*
 @Composable
 fun HomeScreen(
     backStackEntry: State<NavBackStackEntry?>?,
-    feelingLuckyDialogViewModel: FeelingLuckyDialogViewModel = hiltViewModel(),
     onHomeScreenComponentClicked: (Screens) -> Unit
 ) {
 
@@ -281,16 +280,15 @@ fun HomeScreen(
                     }
                 }
             }
-
+            val feelingLuckyViewModel: FeelingLuckyDialogViewModel = hiltViewModel()
             if (shouldShowLuckyJokeDialog) {
                 FeelingLuckyJokeDialog(
                     onDismiss = {
                         shouldShowLuckyJokeDialog = false
-                        feelingLuckyDialogViewModel.getAllJokes(count = 2)
                     }, modifier = Modifier.align(
                         Alignment.Center
                     ),
-                    viewModel = feelingLuckyDialogViewModel
+                    viewModel = feelingLuckyViewModel
                 )
             }
 
@@ -307,12 +305,18 @@ fun FeelingLuckyJokeDialog(
 ) {
 
     val state = viewModel.state.value
-    val joke = remember(state.jokes, state.jokes.size, state) {
+    val joke = remember {
         state.jokes.random()
+    }
+    var isFavourite by remember {
+        mutableStateOf(joke.isFavourite)
     }
 
     Dialog(
-        onDismissRequest = onDismiss,
+        onDismissRequest = {
+            viewModel.getAllJokes(count = 2)
+            onDismiss.invoke()
+        },
     ) {
         Column(
             modifier = modifier
@@ -339,7 +343,7 @@ fun FeelingLuckyJokeDialog(
                 )
             if (state.jokes.isNotEmpty()) {
                 val favouriteIcon =
-                    if (joke.isFavourite) Icons.Filled.Favorite else Icons.Outlined.FavoriteBorder
+                    if (isFavourite) Icons.Filled.Favorite else Icons.Outlined.FavoriteBorder
 
                 if (joke.type == "twopart") {
                     val builder = buildAnnotatedString {
@@ -373,7 +377,8 @@ fun FeelingLuckyJokeDialog(
                 }
                 IconButton(
                     onClick = {
-                        viewModel.onFavouriteItemClicked(joke)
+                        isFavourite = !isFavourite
+                        viewModel.onFavouriteItemClicked(joke, isFavourite)
                     },
                 ) {
                     Icon(
