@@ -15,7 +15,6 @@ import com.google.accompanist.navigation.animation.rememberAnimatedNavController
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.delay
 import javax.inject.Inject
-
 @AndroidEntryPoint
 @OptIn(ExperimentalAnimationApi::class)
 class MainActivity : ComponentActivity() {

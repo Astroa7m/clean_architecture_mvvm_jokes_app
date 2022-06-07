@@ -4,13 +4,9 @@
     android:viewportWidth="1000"
     android:viewportHeight="1000">
   <group android:pivotX="500" android:pivotY="500"
-      android:scaleX="0.5" android:scaleY="0.5">
+    android:scaleX="0.5" android:scaleY="0.5">
     <path
-        android:pathData="M498.99,0.01h2.02c275.59,0 499,223.41 499,499V501c0,275.59 -223.41,499 -499,499h-2.02c-275.59,0 -499,-223.41 -499,-499v-1.99C-0.01,223.42 223.4,0.01 498.99,0.01Z"
-        android:fillColor="#feb739"
-        android:fillType="evenOdd"/>
-    <path
-        android:pathData="M842.3,648.32C798.2,807.29 652.49,923.99 479.52,923.99c-207.92,0 -376.48,-168.61 -376.48,-376.61a377.2,377.2 0,0 1,12.54 -96.65Z"
+        android:pathData="M846.93,644.24c-44.8,161.41 -192.81,279.9 -368.51,279.9 -211.21,0 -382.42,-171.2 -382.42,-382.38a382.81,382.81 0,0 1,12.74 -98.14Z"
         android:fillColor="#281d29"
         android:fillType="evenOdd"/>
     <path
