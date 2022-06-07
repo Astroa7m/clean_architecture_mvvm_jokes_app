@@ -111,7 +111,7 @@ fun HomeScreen(
                         .clickable { onHomeScreenComponentClicked(Screens.AllJokeScreen) }
                 ) {
 
-                    ImageHorizontalGradient(
+                    HorizontalGradient(
                         modifier = Modifier.fillMaxSize(),
                         isReversed = true,
                         height = (screenWidth / 2.5).toFloat(),
@@ -142,7 +142,7 @@ fun HomeScreen(
                                 .clickable { onHomeScreenComponentClicked(Screens.ProgrammingJokeScreen) }
                         ) {
 
-                            ImageVerticalGradient(
+                            VerticalGradient(
                                 modifier = Modifier.fillMaxSize(),
                                 height = (screenWidth / 2).toFloat(),
                                 colorStart = Color(0xFFe56c95),
@@ -164,7 +164,7 @@ fun HomeScreen(
                                 .clickable { onHomeScreenComponentClicked(Screens.MiscJokeScreen) }
                         ) {
 
-                            ImageHorizontalGradient(
+                            HorizontalGradient(
                                 modifier = Modifier.fillMaxSize(),
                                 height = (screenWidth / 1.5).toFloat(),
                                 colorStart = Color(0xFFcd4990),
@@ -189,7 +189,7 @@ fun HomeScreen(
                                 .clickable { onHomeScreenComponentClicked(Screens.SpookyJokeScreen) }
                         ) {
 
-                            ImageVerticalGradient(
+                            VerticalGradient(
                                 modifier = Modifier.fillMaxSize(),
                                 isReversed = true,
                                 height = (screenWidth / 2).toFloat(),
@@ -216,7 +216,7 @@ fun HomeScreen(
 
                         ) {
 
-                            ImageHorizontalGradient(
+                            HorizontalGradient(
                                 modifier = Modifier.fillMaxSize(),
                                 isReversed = true,
                                 height = (screenWidth / 1.5).toFloat(),
@@ -239,7 +239,7 @@ fun HomeScreen(
                                 .clickable { onHomeScreenComponentClicked(Screens.PunJokeScreen) }
                         ) {
 
-                            ImageHorizontalGradient(
+                            HorizontalGradient(
                                 modifier = Modifier.fillMaxSize(),
                                 isReversed = true,
                                 height = (screenWidth / 2).toFloat(),
@@ -265,7 +265,7 @@ fun HomeScreen(
                                 .clickable { onHomeScreenComponentClicked(Screens.Christmas) }
                         ) {
 
-                            ImageHorizontalGradient(
+                            HorizontalGradient(
                                 modifier = Modifier.fillMaxSize(),
                                 height = (screenWidth / 2).toFloat(),
                                 colorStart = Color(0xFFb651c9),

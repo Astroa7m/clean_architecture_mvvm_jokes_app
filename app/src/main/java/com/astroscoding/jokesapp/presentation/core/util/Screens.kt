@@ -7,6 +7,7 @@ sealed class Screens(val route: String, @DrawableRes val icon: Int = 0, val desc
 
     fun capitalizeFirst() =  route[0].uppercase()+route.substring(1)
 
+    object WelcomeScreen: Screens("welcome")
     object HomeScreen : Screens("home")
     object AllJokeScreen : Screens("all", R.drawable.ic_misc, "A mixture of laughter")
     object ProgrammingJokeScreen : Screens("programming", R.drawable.ic_code, "Some bugs better left uncaught")

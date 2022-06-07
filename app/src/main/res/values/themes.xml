@@ -3,5 +3,6 @@
 
     <style name="Theme.JokesApp" parent="android:Theme.Material.Light.NoActionBar">
         <item name="android:statusBarColor">#4C4C4C</item>
+        <item name="android:windowBackground">#FF281d29</item>
     </style>
 </resources>

@@ -29,7 +29,7 @@ abstract class BaseJokesViewModel(
     private val _state = mutableStateOf(JokesState())
     open val state: State<JokesState> = _state
 
-    protected val _event = Channel<UIEvent>()
+    private val _event = Channel<UIEvent>()
     val event = _event.consumeAsFlow()
 
     var jokesPreference by mutableStateOf(Pair(false, false))

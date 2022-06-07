@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="Theme.JokesApp.Starting" parent="Theme.SplashScreen">
+        <item name="windowSplashScreenBackground">#FF281d29</item>
+        <item name="windowSplashScreenAnimatedIcon">@drawable/ic_dark</item>
+        <item name="windowSplashScreenIconBackgroundColor">#fffeb739</item>
+        <item name="postSplashScreenTheme">@style/Theme.JokesApp</item>
+    </style>
+</resources>

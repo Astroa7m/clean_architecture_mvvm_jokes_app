@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="Theme.JokesApp.Starting" parent="Theme.SplashScreen">
+        <item name="android:windowSplashScreenBackground">#FF281d29</item>
+        <item name="android:windowSplashScreenAnimatedIcon">@drawable/ic_dark</item>
+        <item name="android:windowSplashScreenIconBackgroundColor">#fffeb739</item>
+        <item name="postSplashScreenTheme">@style/Theme.JokesApp</item>
+    </style>
+</resources>
