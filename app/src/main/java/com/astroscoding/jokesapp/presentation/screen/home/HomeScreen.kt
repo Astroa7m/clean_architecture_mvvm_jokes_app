@@ -305,12 +305,6 @@ fun FeelingLuckyJokeDialog(
 ) {
 
     val state = viewModel.state.value
-    val joke = remember {
-        state.jokes.random()
-    }
-    var isFavourite by remember {
-        mutableStateOf(joke.isFavourite)
-    }
 
     Dialog(
         onDismissRequest = {
@@ -342,6 +336,12 @@ fun FeelingLuckyJokeDialog(
                     color = MaterialTheme.colors.error
                 )
             if (state.jokes.isNotEmpty()) {
+                val joke = remember {
+                    state.jokes.random()
+                }
+                var isFavourite by remember {
+                    mutableStateOf(joke.isFavourite)
+                }
                 val favouriteIcon =
                     if (isFavourite) Icons.Filled.Favorite else Icons.Outlined.FavoriteBorder
 
