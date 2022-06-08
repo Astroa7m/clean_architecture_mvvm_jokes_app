@@ -1,13 +1,11 @@
 package com.astroscoding.jokesapp.presentation.core.component
 
 
-import androidx.compose.animation.AnimatedContentScope
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
-import androidx.navigation.get
 import com.astroscoding.jokesapp.presentation.core.util.Screens
 import com.astroscoding.jokesapp.presentation.screen.add_joke.AddJokeScreen
 import com.astroscoding.jokesapp.presentation.screen.all_jokes.AllJokesScreen
@@ -49,12 +47,7 @@ fun NavController(
         }
 
         composable(
-            Screens.HomeScreen.route,
-            enterTransition = {
-                if (startDestination == Screens.WelcomeScreen.route) slideIntoContainer(
-                    AnimatedContentScope.SlideDirection.Left
-                ) else null
-            }
+            Screens.HomeScreen.route
         ) {
             HomeScreen(navController.currentBackStackEntryAsState()) { category ->
                 navController.navigate(category.route) {

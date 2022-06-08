@@ -1,6 +1,5 @@
 package com.astroscoding.jokesapp.presentation.core.component
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
@@ -108,16 +107,15 @@ fun DefaultAppBar(
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = if (isLocal) Arrangement.Center else Arrangement.SpaceBetween
                 ) {
-                    Icon(
-                        modifier = Modifier
-                            .size(25.dp)
-                            .clickable {
-                                onFeelingLuckyIconClicked()
-                            },
-                        painter = painterResource(id = R.drawable.ic_dice),
-                        contentDescription = null,
-                        tint = Color(0xFF8d5185),
-                    )
+                    IconButton(onClick = onFeelingLuckyIconClicked) {
+                        Icon(
+                            modifier = Modifier
+                                .size(25.dp),
+                            painter = painterResource(id = R.drawable.ic_dice),
+                            contentDescription = null,
+                            tint = Color(0xFF8d5185),
+                        )
+                    }
                     Column(
                         modifier = Modifier.fillMaxHeight(),
                         verticalArrangement = Arrangement.SpaceAround,
@@ -131,14 +129,15 @@ fun DefaultAppBar(
                         )
                         Text(text = ScreenTitle, color = Color.White)
                     }
-                    Icon(
-                        modifier = Modifier
-                            .size(25.dp)
-                            .clickable { onFavouriteIconClicked() },
-                        imageVector = Icons.Outlined.FavoriteBorder,
-                        contentDescription = null,
-                        tint = Color(0xFF8d5185)
-                    )
+                    IconButton(onClick = onFavouriteIconClicked) {
+                        Icon(
+                            modifier = Modifier
+                                .size(25.dp),
+                            imageVector = Icons.Outlined.FavoriteBorder,
+                            contentDescription = null,
+                            tint = Color(0xFF8d5185)
+                        )
+                    }
                 }
             } else {
                 Row(
